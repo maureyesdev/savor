@@ -1,17 +1,22 @@
 /**
  * @typedef {{ element: HTMLElement, params: Record<string,string> }} PageCtx
- * @typedef {(ctx: PageCtx) => (void | (()=>void) | Promise<void | (()=>void)>)} PageFn
+ * @typedef {(ctx: PageCtx) => (void | (()=>void) | {cleanup: ()=>void, api?: Record<string, any>} | Promise<void | (()=>void) | {cleanup: ()=>void, api?: Record<string, any>} )} PageFn
  * @typedef {{ path: string, page: PageFn }} Route
  */
 
 /**
  * Create a tiny History API router with async page + cleanup support.
+ * Accepts page/notFound returning:
+ *   - nothing
+ *   - a cleanup function
+ *   - or { cleanup, api? }
  * @param {{ root: HTMLElement, routes: Route[], notFound?: PageFn }} options
  */
 export function createHistoryRouter({ root, routes, notFound }) {
   if (!(root instanceof HTMLElement)) throw new Error('router: invalid root');
 
   const compiled = routes.map((r) => ({ ...r, ...compilePath(r.path) }));
+  /** @type {null | (()=>void | Promise<void>)} */
   let cleanup = null;
 
   async function render({ fromPopstate = false } = {}) {
@@ -20,7 +25,7 @@ export function createHistoryRouter({ root, routes, notFound }) {
     const params = match?.params ?? {};
     const page = match?.route?.page || notFound;
 
-    // teardown previous page
+    // teardown previous page (supports async cleanup)
     if (cleanup) {
       try {
         await cleanup();
@@ -31,8 +36,19 @@ export function createHistoryRouter({ root, routes, notFound }) {
     // render page
     root.innerHTML = '';
     if (typeof page === 'function') {
-      const maybeCleanup = await page({ element: root, params });
-      if (typeof maybeCleanup === 'function') cleanup = maybeCleanup;
+      const result = await page({ element: root, params });
+
+      // normalize possible return shapes
+      if (typeof result === 'function') {
+        cleanup = result;
+      } else if (
+        result &&
+        typeof result === 'object' &&
+        typeof result.cleanup === 'function'
+      ) {
+        cleanup = result.cleanup;
+        // result.api is allowed but unused here; parent can capture if needed
+      }
     } else {
       root.innerHTML = `<h1>404</h1><p>Not found</p>`;
     }
@@ -59,6 +75,7 @@ export function createHistoryRouter({ root, routes, notFound }) {
       a.target === '_blank'
     )
       return;
+
     const href = a.getAttribute('href');
     if (!href || /^https?:\/\//i.test(href)) return; // external
     e.preventDefault();

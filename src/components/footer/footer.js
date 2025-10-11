@@ -1,5 +1,5 @@
 import footerHtml from './footer.html?raw';
-import { renderTemplate } from '../../core/render-template';
+import { renderTemplate } from '@/core/render';
 
 export function footer({ element }) {
   const year = new Date().getFullYear();

@@ -390,8 +390,8 @@ body {
   font-family: var(--font-text);
   font-size: var(--base);
   line-height: 1.5;
-  background-color: var(--color-gray-light);
-  color: var(--color-black);
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
 h1,

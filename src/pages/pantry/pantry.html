@@ -1,0 +1,28 @@
+<div class="container" id="pantryContainer">
+  <div class="header">
+    <h1>Savor</h1>
+    <p>Manage your pantry ingredients</p>
+  </div>
+
+  <div class="pantry-card">
+    <form class="add-ingredient-form" id="addIngredientForm">
+      <div class="input-wrapper">
+        <input
+          type="text"
+          class="ingredient-input"
+          id="ingredientInput"
+          placeholder="Enter an ingredient (e.g., tomatoes, rice, eggs)"
+          autocomplete="off"
+        />
+      </div>
+      <button type="submit" class="add-button">Add to Pantry</button>
+    </form>
+
+    <div class="pantry-header">
+      <h2>My Pantry</h2>
+      <span class="item-count" id="itemCount">{{count}}</span>
+    </div>
+
+    <div id="pantryList" class="pantry-list">{{items}}</div>
+  </div>
+</div>

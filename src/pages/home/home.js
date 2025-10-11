@@ -1,4 +1,4 @@
-import { renderTemplate } from '../../core/render-template';
+import { renderTemplate } from '@/core/render';
 import template from './home.html?raw';
 
 /**

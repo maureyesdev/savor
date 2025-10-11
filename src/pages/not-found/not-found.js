@@ -1,5 +1,5 @@
+import { renderTemplate } from '@/core/render';
 import template from './not-found.html?raw';
-import { renderTemplate } from '../../core/render-template';
 
 /**
  * @param {Object} props
