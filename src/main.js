@@ -1,10 +1,10 @@
-import './style.css';
-import { createHistoryRouter } from './core/router.js';
-import { HomePage } from './pages/home.js';
-
-const routes = [{ path: '/', page: HomePage }];
+import { createHistoryRouter } from '@/core/router';
+import { notFoundPage } from '@/pages/not-found/not-found';
+import { routes } from '@/config/routes';
+import '@/style.css';
 
 createHistoryRouter({
   root: document.getElementById('app'),
   routes,
+  notFound: notFoundPage,
 });
