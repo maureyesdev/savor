@@ -1,0 +1,31 @@
+<div class="container" id="recipesContainer">
+  <header class="recipes-header">
+    <div>
+      <h1>Recipes</h1>
+    </div>
+
+    <form id="recipeSearchForm" class="recipes-search">
+      <input
+        id="recipeSearch"
+        type="search"
+        placeholder="Search placeholder recipes…"
+        autocomplete="off"
+      />
+      <button type="submit">Search</button>
+    </form>
+  </header>
+
+  <section class="recipes-results">
+    <div class="results-meta">
+      <h2>Suggestions</h2>
+      <span id="resultsCount" class="badge">{{resultsCount}} results</span>
+    </div>
+
+    <div id="recipesGrid" class="recipes-grid">{{recipes}}</div>
+
+    <div id="recipesEmpty" class="empty-state" style="display: none">
+      <div class="empty-state-icon">🍽️</div>
+      <p>No recipes match your filters yet.</p>
+    </div>
+  </section>
+</div>

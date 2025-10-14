@@ -1,3 +1,4 @@
+// TODO: NEED TO ADD A LIMIT OF 20 ITEMS
 export function usePantry() {
   const SAVOR_PANTRY_KEY = 'savor:pantry';
 

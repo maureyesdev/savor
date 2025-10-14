@@ -2,7 +2,7 @@ import { renderTemplate, renderList } from '@/core/render';
 import template from './pantry.html?raw';
 import pantryItemTemplate from './pantry-item.html?raw';
 import emptyPantryTemplate from './empty-pantry.html?raw';
-import { usePantry } from './use-pantry';
+import { usePantry } from '@/hooks/use-pantry';
 import './pantry.css';
 
 /**
