@@ -1,0 +1,44 @@
+<section id="recipeDetail" class="container">
+  <header class="hero">
+    <div class="hero-media">
+      <img class="hero-img" src="{{image}}" alt="{{title}}" />
+    </div>
+    <div class="hero-text">
+      <h1 class="title">{{title}}</h1>
+      <div class="meta">{{category}} {{area}}</div>
+      <div class="tags">{{tags}}</div>
+    </div>
+  </header>
+
+  <div class="grid">
+    <aside class="card section">
+      <h2>Ingredients</h2>
+      <ul class="ingredients">
+        {{ingredients}}
+      </ul>
+    </aside>
+
+    <main class="card section">
+      <h2>Instructions</h2>
+      <ol class="steps">
+        {{steps}}
+      </ol>
+    </main>
+  </div>
+
+  <section class="nutrition card section">
+    <h2>Nutrition Facts</h2>
+    <div class="nutrition-summary">
+      <ul class="nutrition-stats">
+        {{nutritionSummary}}
+      </ul>
+    </div>
+
+    <div class="nutrition-breakdown">
+      <h3>Macro nutrients</h3>
+      <ul class="macros">
+        {{macroNutrients}}
+      </ul>
+    </div>
+  </section>
+</section>
