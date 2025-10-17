@@ -25,7 +25,6 @@ export function useTheMealDb() {
     const recipe = data?.meals?.[0];
     if (!recipe) return null;
 
-    // Build ingredients array (skip empties)
     const ingredients = [];
     for (let i = 1; i <= 20; i++) {
       const ing = (recipe[`strIngredient${i}`] || '').trim();
@@ -35,7 +34,14 @@ export function useTheMealDb() {
     }
 
     const rawInstructions = recipe.strInstructions ?? '';
-    const steps = splitIntoSteps(rawInstructions);
+    const instructionSteps = splitIntoSteps(rawInstructions);
+    const steps =
+      instructionSteps.length === 1
+        ? rawInstructions
+            .split('.')
+            .map((s) => s.trim())
+            .filter(Boolean)
+        : instructionSteps;
 
     const tags = (recipe.strTags || '')
       .split(',')
@@ -52,7 +58,6 @@ export function useTheMealDb() {
       category: toNullIfEmpty(recipe.strCategory),
       area: toNullIfEmpty(recipe.strArea),
       tags,
-      // Both forms: the full, normalized string and split steps
       instructions: collapseBlankLines(normalizeNewlines(rawInstructions)),
       instructionSteps: steps,
       youtube: youtubeId ? { id: youtubeId, url: youtube } : null,

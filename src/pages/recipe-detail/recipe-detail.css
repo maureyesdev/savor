@@ -58,11 +58,17 @@
 }
 
 /* Main grid: image + content */
+
+#recipeDetail .grid.full-width {
+  grid-template-columns: 1fr;
+}
+
 #recipeDetail .grid {
   display: grid;
   grid-template-columns: 420px 1fr;
   gap: var(--gap);
   align-items: start;
+  margin-bottom: 2rem;
 }
 
 #recipeDetail .card {

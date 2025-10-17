@@ -8,13 +8,20 @@ import ingredientHtml from './ingredient.html?raw';
 import stepHtml from './step.html?raw';
 import nutrientHtml from './nutrient.html?raw';
 import macroNutrientsHtml from './macro-nutrients.html?raw';
+import { usePantry } from '@hooks/use-pantry';
 import './recipe-detail.css';
+
+const INGREDIENT_IN_PANTRY_BACKGROUND_COLOR = '#ecfdf5';
+const INGREDIENT_IN_PANTRY_BORDER_COLOR = '#c6f6d5';
+const INGREDIENT_NOT_IN_PANTRY_BACKGROUND_COLOR = '#fecaca';
+const INGREDIENT_NOT_IN_PANTRY_BORDER_COLOR = '#fff1f2';
 
 /**
  * @param {{ element: HTMLElement }} props
  */
 export async function recipeDetailPage({ element, params }) {
   const { getById } = useTheMealDb();
+  const { getPantryItems } = usePantry();
   const id = params?.id;
   const recipe = await getById(id);
   if (!recipe) {
@@ -51,15 +58,53 @@ export async function recipeDetailPage({ element, params }) {
       renderTemplate(stepHtml, { step }),
     );
 
-    const nutritionSummary = renderList(nutrition.nutrients, (nutrient) =>
-      renderTemplate(nutrientHtml, { nutrient }),
+    const nutritionSummary = renderList(
+      nutrition.nutrients,
+      (nutrient) => renderTemplate(nutrientHtml, { nutrient }),
+      { empty: 'no available' },
     );
 
     const macroNutrients = renderTemplate(macroNutrientsHtml, {
-      percentProtein,
-      percentFat,
-      percentCarbs,
+      percentProtein: percentProtein ?? 'not available',
+      percentFat: percentFat ?? 'not available',
+      percentCarbs: percentCarbs ?? 'not available',
     });
+
+    const pantryItems = getPantryItems();
+    const ingredientNames = recipe.ingredients.map(({ ingredient }) =>
+      ingredient.toLowerCase().trim(),
+    );
+    const missingIngredientsFromPantry = ingredientNames.filter(
+      (ingredient) =>
+        !pantryItems
+          .map((pantryItem) => pantryItem.toLowerCase().trim())
+          .includes(ingredient),
+    );
+    const havingIngredientsFromPantry = ingredientNames.filter((ingredient) =>
+      pantryItems
+        .map((pantryItem) => pantryItem.toLowerCase().trim())
+        .includes(ingredient),
+    );
+    const missingIngredientsFromPantryHtml = renderList(
+      missingIngredientsFromPantry,
+      (ingredient) =>
+        renderTemplate(chipHtml, {
+          value: ingredient,
+          backgroundColor: INGREDIENT_NOT_IN_PANTRY_BACKGROUND_COLOR,
+          borderColor: INGREDIENT_NOT_IN_PANTRY_BORDER_COLOR,
+        }),
+      { empty: 'none' },
+    );
+    const havingIngredientsFromPantryHtml = renderList(
+      havingIngredientsFromPantry,
+      (ingredient) =>
+        renderTemplate(chipHtml, {
+          value: ingredient,
+          backgroundColor: INGREDIENT_IN_PANTRY_BACKGROUND_COLOR,
+          borderColor: INGREDIENT_IN_PANTRY_BORDER_COLOR,
+        }),
+      { empty: 'none' },
+    );
 
     element.innerHTML = renderTemplate(template, {
       title: recipe.title,
@@ -69,8 +114,9 @@ export async function recipeDetailPage({ element, params }) {
       tags,
       ingredients,
       steps,
-      nutritionSummary,
+      nutritionSummary: nutritionSummary,
       macroNutrients,
+      pantryItems: `${havingIngredientsFromPantryHtml}${missingIngredientsFromPantryHtml}`,
     });
   }
 }
