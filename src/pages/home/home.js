@@ -1,5 +1,6 @@
 import { renderTemplate } from '@/core/render';
 import template from './home.html?raw';
+import './home.css';
 
 /**
  * @param {Object} props

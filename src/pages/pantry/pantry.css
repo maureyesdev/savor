@@ -1,4 +1,6 @@
 #pantryContainer {
+  height: 75vh;
+
   .header {
     text-align: center;
     margin-bottom: 3rem;

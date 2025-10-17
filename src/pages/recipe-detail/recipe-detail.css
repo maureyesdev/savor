@@ -92,7 +92,6 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  border: 1px solid red;
 }
 
 #recipeDetail .image-caption {
@@ -318,20 +317,20 @@
   }
 }
 /* Layout cap so hero never gets comically wide */
-.recipe-detail {
+#recipeDetail .recipe-detail {
   max-width: 980px; /* tune to taste */
   margin: 0 auto;
 }
 
 /* Hero layout */
-.hero {
+#recipeDetail .hero {
   display: grid;
   gap: 1rem;
   margin-block: 1.5rem;
 }
 
 /* Media box keeps aspect ratio + crops overflow */
-.hero-media {
+#recipeDetail .hero-media {
   border: 1px solid var(--color-border);
   border-radius: 12px;
   overflow: hidden;
@@ -340,7 +339,7 @@
 }
 
 /* Make the image fill and crop, never stretch */
-.hero-img {
+#recipeDetail .hero-img {
   width: 100%;
   height: 100%;
   object-fit: cover; /* key piece */
@@ -349,7 +348,7 @@
 
 /* Desktop: put image and text side-by-side */
 @media (min-width: 900px) {
-  .hero {
+  #recipeDetail .hero {
     grid-template-columns: 1.2fr 1fr; /* image | text */
     align-items: center;
   }
@@ -357,7 +356,7 @@
 
 /* Mobile: taller, friendlier crop */
 @media (max-width: 899px) {
-  .hero-media {
+  #recipeDetail .hero-media {
     aspect-ratio: 4 / 3; /* nicer on phones */
     max-height: none;
   }
